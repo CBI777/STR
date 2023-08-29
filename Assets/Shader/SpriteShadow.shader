@@ -1,42 +1,47 @@
-Shader "Custom/SpriteShadow" {
-	Properties{
-		_Color("Color", Color) = (1,1,1,1)
-		[PerRendererData]_MainTex("Sprite Texture", 2D) = "white" {}
-		_Cutoff("Shadow alpha cutoff", Range(0,1)) = 0.5
-	}
-		SubShader{
-			Tags
-			{
-				"Queue" = "Geometry"
-				"RenderType" = "TransparentCutout"
-			}
-			LOD 200
+Shader "Sprites/Beat/Diffuse-Shadow"
+{
+    Properties
+    {
+        [PerRendererData] _MainTex("Sprite Texture", 2D) = "white" {}
+        _Color("Tint", Color) = (1,1,1,1)
+        _Cutoff("Shadow alpha cutoff", Range(0,1)) = 0.5
+    }
 
-			Cull Off
+        SubShader
+        {
+            Tags
+            {
+                "Queue" = "AlphaTest"
+                "IgnoreProjector" = "True"
+                "RenderType" = "TransparentCutout"
+                "PreviewType" = "Plane"
+                "CanUseSpriteAtlas" = "True"
+            }
 
-			CGPROGRAM
-			// Lambert lighting model, and enable shadows on all light types
-			#pragma surface surf Lambert addshadow fullforwardshadows
+            LOD 200
+            Cull Off
+            Lighting On
+            ZWrite Off
 
-			// Use shader model 3.0 target, to get nicer looking lighting
-			#pragma target 3.0
+            CGPROGRAM
+            #pragma surface surf Lambert addshadow alphatest:_Cutoff
 
-			sampler2D _MainTex;
-			fixed4 _Color;
-			fixed _Cutoff;
+            sampler2D _MainTex;
+            fixed4 _Color;
 
-			struct Input
-			{
-				float2 uv_MainTex;
-			};
+            struct Input
+            {
+                float2 uv_MainTex;
+            };
 
-			void surf(Input IN, inout SurfaceOutput o) {
-				fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
-				o.Albedo = c.rgb;
-				o.Alpha = c.a;
-				clip(o.Alpha - _Cutoff);
-			}
-			ENDCG
-		}
-			FallBack "Diffuse"
+            void surf(Input IN, inout SurfaceOutput o)
+            {
+                fixed4 c = tex2D(_MainTex, IN.uv_MainTex) * _Color;
+                o.Albedo = c.rgb;
+                o.Alpha = c.a;
+            }
+            ENDCG
+        }
+
+            Fallback "Legacy Shaders/Transparent/Cutout/VertexLit"
 }

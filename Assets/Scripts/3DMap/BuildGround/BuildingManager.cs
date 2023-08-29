@@ -11,7 +11,7 @@ public class BuildingManager : MonoBehaviour
     {
         foreach (BuildingInfo bds in bi)
         {
-            buildings.Add(Instantiate<GameObject>(Resources.Load<GameObject>("Building3D/" + bds.prefabName),
+            buildings.Add(Instantiate<GameObject>(Resources.Load<GameObject>(Whereabouts.Building3d + bds.prefabName),
                 new Vector3(bds.xyz[0], bds.xyz[1], bds.xyz[2]),
                 Quaternion.Euler(bds.rotation[0], bds.rotation[1], bds.rotation[2]),
                 this.transform)

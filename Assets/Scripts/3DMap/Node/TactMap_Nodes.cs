@@ -94,7 +94,7 @@ public class TactMap_Nodes : MonoBehaviour
     /// </summary>
     private void SetMaterial()
     {
-        this.conqMat.material = Resources.Load<Material>("Material/Node_" + this.conq.ToString());
+        this.conqMat.material = Resources.Load<Material>(Whereabouts.NodeMaterial + this.conq.ToString());
     }
 
     /// <summary>
@@ -105,7 +105,9 @@ public class TactMap_Nodes : MonoBehaviour
     {
         this.spec = (EnumUtil<NodeSpec>.Parse(newSpec));
     }
-    //This function should be called whenever you want to add a new state
+    /// <summary>
+    /// This function should be called whenever you want to add a new state
+    /// </summary>
     private void AddState(string newState)
     {
         if (this.state.Count == 0)
@@ -120,4 +122,13 @@ public class TactMap_Nodes : MonoBehaviour
             this.state.Add(temp);
         }
     }
+    /// <summary>
+    /// Get function for conn of the node
+    /// </summary>
+    /// <returns>conn of the node</returns>
+    public List<int> getConnInfo()
+    {
+        return this.conn;
+    }
+
 }

@@ -22,9 +22,6 @@ public class GroundManager : MonoBehaviour
     //this will be initailized in start, since the renderer will be attached to the same object as this script
     private SpriteRenderer bgImg;
 
-    [SerializeField]
-    private Material test;
-
     public void GetInitInfo(GroundInfo gd)
     {
         //Since manager IS the one that has the renderer, its transform is the size of plane
@@ -55,8 +52,6 @@ public class GroundManager : MonoBehaviour
 
     private void SetSprite(string name, Rect rect, Vector2 piv, float pixel)
     {
-        Sprite a = Sprite.Create(Resources.Load<Texture2D>("Background/" + name), rect, piv, pixel);
-        //bgImg.GetComponent<SpriteRenderer>().sprite = Sprite.Create(Resources.Load<Texture2D>("Background/" + name), rect, piv, pixel);
-        this.test.mainTexture = a.texture;
+        bgImg.GetComponent<SpriteRenderer>().sprite = Sprite.Create(Resources.Load<Texture2D>(Whereabouts.BackgroundTextures + name), rect, piv, pixel);
     }
 }

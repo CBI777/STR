@@ -29,6 +29,7 @@ public class NodeInfo
     public string spec;
     public List<string> state;
     public List<float> xyz;
+    //99: self / 0 : not connected / 1 : connected both ways / 2 : one-way dest / 3 : one-way depart
     public List<int> conn;
 }
 
