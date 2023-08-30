@@ -225,7 +225,7 @@ MonoBehaviour:
   minZoom: 50
   maxZoom: 70
   zoom_damping: 20
-  useZoomLimit: 1
+  useZoomLimit: 0
   camPad: 3
 --- !u!1 &508697970
 GameObject:

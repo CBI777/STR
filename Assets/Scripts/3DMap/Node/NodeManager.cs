@@ -30,7 +30,8 @@ public class NodeManager : MonoBehaviour
             //Add node to nodes
             nodes.Add(Instantiate<GameObject>(Resources.Load<GameObject>(Whereabouts.NodePrefab),
                 new Vector3(node.xyz[0], node.xyz[1], node.xyz[2]),
-                Quaternion.identity,                nodeKeeper).GetComponent<TactMap_Nodes>());
+                Quaternion.identity,
+                nodeKeeper).GetComponent<TactMap_Nodes>());
             nodes[tempIdx].InitNode(node);
         }
 
