@@ -1,9 +1,9 @@
 {
 	"NodeInfo":[
-		{"index":0, "conq":"SD", "spec":"FB", "state":[], "xyz":[-9.65,-14.04,0], "conn":[99,1,0,0]},
-		{"index":1, "conq":"NA", "spec":"NR", "state":[], "xyz":[-4.35,-9.73,0], "conn":[1,99,1,0]},
-		{"index":2, "conq":"RC", "spec":"NR", "state":[], "xyz":[0.37,-5.64,0], "conn":[0,1,99,1]},
-		{"index":3, "conq":"RC", "spec":"PH", "state":[], "xyz":[4.96,-1.2,0], "conn":[0,0,1,99]}
+		{"index":0, "conq":"SD", "spec":"FB", "state":[], "xyz":[-9.65,-14.04,0], "conn":[0,1,0,0]},
+		{"index":1, "conq":"NA", "spec":"NR", "state":[], "xyz":[-4.35,-9.73,0], "conn":[1,0,1,0]},
+		{"index":2, "conq":"RC", "spec":"NR", "state":[], "xyz":[0.37,-5.64,0], "conn":[0,1,0,2]},
+		{"index":3, "conq":"RC", "spec":"PH", "state":[], "xyz":[4.96,-1.2,0], "conn":[0,0,3,0]}
 	],
 	"BuildingInfo":[
 		{"index":0, "prefabName":"SB1", "xyz":[-10.67,-12.8,-0.5], "rotation":[0,0,-52.77], "scale":[1,1,1]},

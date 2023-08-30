@@ -16,33 +16,35 @@ public class TactMap_Nodes : MonoBehaviour
     // in which states is the node effected by?
     [SerializeField]
     private List<NodeState> state;
+
     //which nodes are this node connected to?
     [SerializeField]
     private List<int> conn;
+
     //The conqforce always starts with na
     //we use if statement to see if there's any need in changing material to update the conq.
     [SerializeField]
     private ConqForce prevConq = ConqForce.NA;
+    //The nodespec always starts with nr
+    //we use if statment to see if there's any need in changing mesh to update the spec.
+    [SerializeField]
+    private NodeSpec prevSpec = NodeSpec.NR;
 
     private MeshRenderer conqMat;
+    private MeshFilter specMesh;
 
     private void Awake()
     {
+        specMesh = this.GetComponent<MeshFilter>();
         conqMat = this.GetComponent<MeshRenderer>();
     }
 
-    public void InitNode(int index, string conq, string[] spec, string[] state, int[] conn)
+    public void InitNode(int index, string conq, string spec, string[] state, int[] conn)
     {
         this.index = index;
         this.conq = EnumUtil<ConqForce>.Parse(conq);
-        if(spec.Length != 0)
-        {
-            foreach (string st in spec)
-            {
-                ChangeSpec(st);
-            }
-        }
-        if(state.Length != 0)
+        this.spec = (EnumUtil<NodeSpec>.Parse(spec));
+        if (state.Length != 0)
         {
             foreach (string st in state)
             {
@@ -58,22 +60,7 @@ public class TactMap_Nodes : MonoBehaviour
 
     public void InitNode(NodeInfo ni)
     {
-        this.index = ni.index;
-        this.conq = EnumUtil<ConqForce>.Parse(ni.conq);
-        ChangeSpec(ni.spec);
-        if (ni.state.Count != 0)
-        {
-            foreach (string st in ni.state)
-            {
-                AddState(st);
-            }
-        }
-        foreach (int c in ni.conn)
-        {
-            this.conn.Add(c);
-        }
-        
-        UpdateNode();
+        InitNode(ni.index, ni.conq, ni.spec, ni.state.ToArray(), ni.conn.ToArray());
     }
 
     /// <summary>
@@ -87,6 +74,11 @@ public class TactMap_Nodes : MonoBehaviour
             SetMaterial();
             this.prevConq = this.conq;
         }
+        if(this.prevSpec != this.spec)
+        {
+            SetMesh();
+            this.prevSpec = this.spec;
+        }
     }
 
     /// <summary>
@@ -98,13 +90,13 @@ public class TactMap_Nodes : MonoBehaviour
     }
 
     /// <summary>
-    /// This function should be called whenever you want to change the spec value
+    /// This function is called when there's a need of change in mesh - when spec is changed
     /// </summary>
-    /// <param name="newSpec"></param>
-    private void ChangeSpec(string newSpec)
+    private void SetMesh()
     {
-        this.spec = (EnumUtil<NodeSpec>.Parse(newSpec));
+        this.specMesh.mesh = Resources.Load<Mesh>(Whereabouts.NodeMeshFilter + this.spec.ToString());
     }
+
     /// <summary>
     /// This function should be called whenever you want to add a new state
     /// </summary>
@@ -122,6 +114,7 @@ public class TactMap_Nodes : MonoBehaviour
             this.state.Add(temp);
         }
     }
+
     /// <summary>
     /// Get function for conn of the node
     /// </summary>
@@ -130,5 +123,4 @@ public class TactMap_Nodes : MonoBehaviour
     {
         return this.conn;
     }
-
 }

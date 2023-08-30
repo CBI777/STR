@@ -4,12 +4,14 @@
 /// </summary>
 public static class Whereabouts
 {
-    public static string NodePrefab = "Node/NodePrefab/Node_";
-    public static string NodeConnectionPrefab = "Node/LinePrefab/Line_";
-    public static string NodeMaterial = "Material/Node_";
-    public static string NodeLinePrefab = "Node/LinePrefab/Line_";
+    public static string NodePrefab = "Node/NodePrefab/Node_Prefab";
+    public static string NodeMeshFilter = "Node/OriginalModel/Node/Node_";
+    public static string NodeMaterial = "Material/Nodes/Node_";
 
+    public static string LinePrefab = "Node/LinePrefab/Line_Prefab";
+    public static string LineMaterial = "Material/Lines/Conn_";
 
     public static string BackgroundTextures = "Background/";
     public static string Building3d = "Building3D/";
+    public static string BuildingMaterial = "Material/Buildings/";
 }
