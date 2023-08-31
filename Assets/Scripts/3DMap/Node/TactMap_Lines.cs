@@ -67,7 +67,6 @@ public class TactMap_Lines : MonoBehaviour
         this.transform.position = (departPos + destPos) / 2;
 
         zRot = Vector3.Angle(Vector3.right, destPos - departPos);
-        Debug.Log(zRot);
         if (destPos.x < departPos.x) { zRot *= -1f; }
         this.transform.rotation = Quaternion.Euler(0f, 0f, zRot);
     }

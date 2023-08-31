@@ -5,9 +5,9 @@
 public static class Whereabouts
 {
     public static string NodePrefab = "Node/NodePrefab/Node_Prefab";
-    //public static string NodeMeshFilter = "Node/OriginalModel/Node/Node_";
     public static string NodeMaterial = "Material/Nodes/Node_";
     public static string NodeSprites = "Node/OriginalModel/Node/Node_";
+    //public static string NodeMeshFilter = "Node/OriginalModel/Node/Node_";
 
 
     public static string LinePrefab = "Node/LinePrefab/Line_Prefab";

@@ -13,10 +13,11 @@ Shader "Custom/SpriteShadow" {
 			LOD 200
 
 			Cull Off
+			ZWrite Off
 
 			CGPROGRAM
 			// Lambert lighting model, and enable shadows on all light types
-			#pragma surface surf Lambert addshadow fullforwardshadows
+			#pragma surface surf Lambert addshadow fullforwardshadows:_Cutoff
 
 			// Use shader model 3.0 target, to get nicer looking lighting
 			#pragma target 3.0
