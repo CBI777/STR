@@ -2,20 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-//XX : 조건처리용, initialization을 위해서 사용한다.
-//중립, 스트론드리움 도미니온, 코프리타 민주주의 인민 공화국, 
+//Neutral(NotApplicable), StronDrium_dominion(Friendly), democratic_Republic_of_Coprita(Main enemy)
 public enum ConqForce
 {
     NA, SD, RC
 };
 
-//아군기지, 아무것도 없음, 진입 불가
+//FriendlyBase, NoRmal(Nothing), ProHibited, StrongHold, 
 public enum NodeSpec
 {
-    FB, NR, PH
+    FB, NR, PH, SH
 }
 
-//문제 없음, 
+//NORmal(nothing out of ordinary)
 public enum NodeState
 {
     nor

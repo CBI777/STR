@@ -15,7 +15,7 @@ public class NodeManager : MonoBehaviour
 
     //list to keep track of actual nodes
     [SerializeField]
-    List<TactMap_Nodes> nodes;
+    List<TactMap_Nodes> nodes = new List<TactMap_Nodes>();
     //list to keep track of nodes' connectivity
     [SerializeField]
     List<List<TactMap_Lines>> lines = new List<List<TactMap_Lines>>();

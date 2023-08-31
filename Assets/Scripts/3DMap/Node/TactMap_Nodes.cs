@@ -30,20 +30,18 @@ public class TactMap_Nodes : MonoBehaviour
     [SerializeField]
     private NodeSpec prevSpec = NodeSpec.NR;
 
-    private MeshRenderer conqMat;
-    private MeshFilter specMesh;
+    private SpriteRenderer spriteRend;
 
     private void Awake()
     {
-        specMesh = this.GetComponent<MeshFilter>();
-        conqMat = this.GetComponent<MeshRenderer>();
+        this.spriteRend = this.GetComponent<SpriteRenderer>();
     }
 
     public void InitNode(int index, string conq, string spec, string[] state, int[] conn)
     {
         this.index = index;
         this.conq = EnumUtil<ConqForce>.Parse(conq);
-        this.spec = (EnumUtil<NodeSpec>.Parse(spec));
+        this.spec = EnumUtil<NodeSpec>.Parse(spec);
         if (state.Length != 0)
         {
             foreach (string st in state)
@@ -86,7 +84,7 @@ public class TactMap_Nodes : MonoBehaviour
     /// </summary>
     private void SetMaterial()
     {
-        this.conqMat.material = Resources.Load<Material>(Whereabouts.NodeMaterial + this.conq.ToString());
+        this.spriteRend.material = Resources.Load<Material>(Whereabouts.NodeMaterial + this.conq.ToString());
     }
 
     /// <summary>
@@ -94,7 +92,7 @@ public class TactMap_Nodes : MonoBehaviour
     /// </summary>
     private void SetMesh()
     {
-        this.specMesh.mesh = Resources.Load<Mesh>(Whereabouts.NodeMeshFilter + this.spec.ToString());
+        this.spriteRend.sprite = Resources.Load<Sprite>(Whereabouts.NodeSprites + this.spec.ToString());
     }
 
     /// <summary>
