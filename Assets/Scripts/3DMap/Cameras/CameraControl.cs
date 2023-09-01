@@ -1,143 +1,92 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Cinemachine;
 
 public class CameraControl : MonoBehaviour
 {
     //Related to the input system. Pulling action at every frame.
     private CameraControlActions cameraActions;
+    //Related to input action - movement
     private InputAction movement;
 
-    //Rotation is outdated:230818 
-    //private InputAction rotation;
-
-    //Main camera that we will use
+    //Value that is multiplied onto the movement to change the speed
     [SerializeField]
-    private Camera mainCam;
-
+    private float speed = 25f;
+    //Our camera is not touched in moving. Thus, this actaully is the transform of the object that this script is attached,
+    //meaning it is the transform of the object that cinemachine is 'following'
     private Transform cameraTransform;
 
-    //maxSpeed : maximum speed of movement
-    //speed : variable to store current speed
-    //acceleration : value for speed of movement to incerase over time
-    //damping : smoothness of movement. The larger the value, the smoother the movement will be.
+    //============================================================================================================//
+    //We achieve zooming 'effect' by changing the offset value of cinemachine camera
+    [SerializeField]
+    private CinemachineVirtualCamera cineCamera;
+    //Transposer contains the offset value that we need to change
+    private CinemachineTransposer cineTransposer;
 
-    //Involved with horizontal movement, wasd.
-    //maxspeed of movement
+    //Full zoom(closest to the look at object):
     [SerializeField]
-    private float maxSpeed = 15f;
-    //current speed of movement
-    private float speed = 0f;
+    private float yMinZoom = -10f;
     [SerializeField]
-    private float acceleration = 10f;
-    //used in decelation
-    [SerializeField]
-    private float damping = 5f;
+    private float zMinZoom = -60f;
 
-    /*
-    //Involved with rotational movement, qe.
-    //Rotation is outdated:230818 
+    //Full zoomout(most far from look at object
     [SerializeField]
-    private float rot_acceleration = 130f;
+    private float yMaxZoom = 0f;
     [SerializeField]
-    private float rot_maxSpeed = 70f;
-    private float rot_speed = 0f;
-    [SerializeField]
-    private float rot_damping = 100f;
-    */
+    private float zMaxZoom = -20f;
 
-    //Related to zoom in and out, mouse wheel.
-    //how close and far the camera will go (orthographic size of the camera = zoom)
-    /*//orthographic
-    [SerializeField]
-    private float minZoom = 3f;
-    [SerializeField]
-    private float maxZoom = 10f;
-    */
+    //This value refers to zoom speed difference between y and z
+    private float zoomRatio;
+    //This value refers to amount of zoom with every input.
+    Vector3 zoomDir;
 
-    //perspective
-    //limit of camera for zooming closer to the ground
+    //The target value that zoom needs to go.
     [SerializeField]
-    private float minZoom = 15f;
-    //limit of camera for zooming further away from the ground
-    [SerializeField]
-    private float maxZoom = 50f;
-    //zoom speed
-    [SerializeField]
-    private float zoom_damping = 20f;
-    //debug : using limitation for zooms
+    private Vector3 zoomTarget;
+
+    //zoom speed max and min
+    private float maxZoomSpeed = 50f;
+    private float minZoomSpeed = 10f;
+
+    //debug : using limitation for zooms or not
     [SerializeField]
     private bool useZoomLimit = true;
 
-    //value set in various functions 
-    //used to update the position of the camera base object.
-    //target vector refers to inputted vector, (from wasd)which contains direction+scalar
-    private Vector3 targetVector;
-    //Rotation is outdated:230818 
-    //targetRotaiton refers to clock or counterclockwise of the rotation that the camera might rotate to.
-    //private float targetRotation;
-    //targetZoom refers to possible zoom that the camera might reach.
-    private float targetZoom;
-
-    //bounding box of camera movement.
-    private Rect camLimit;
-
-    //padding value to limit space of cam movement
-    [SerializeField]
-    private float camPad = 3f;
-
-    //debug
-    private Rect camRect;
+    //============================================================================================================//
 
     private void Awake()
     {
+        cameraTransform = this.transform;
         cameraActions = new CameraControlActions();
-    }
+        cineTransposer = this.cineCamera.GetCinemachineComponent<CinemachineTransposer>();
+        //initialize zoomtarget
+        zoomTarget = this.cineTransposer.m_FollowOffset;
+        zoomRatio = (zMaxZoom - zMinZoom) / (yMaxZoom - yMinZoom);
+        zoomDir = new Vector3(0f, -1f, zoomRatio);
+        zoomDir = zoomDir.normalized;
 
+    }
     private void OnEnable()
     {
-        cameraTransform = this.mainCam.transform;
-        targetZoom = mainCam.fieldOfView;
-        cameraTransform.LookAt(this.transform);
-        SetCamera_xyLimit(-15, 15, -15, 15, camPad, camPad);
+        //Enabling the input map for camera movement
         movement = cameraActions.Camera.Movement;
-        //Rotation is outdated:230818 
-        //rotation = cameraActions.Camera.RotateCamera;
-        cameraActions.Camera.ZoomCamera.performed += zoomCamera;
+        //Adding Function ZoomCameraPerformed into the zoomcamera performed. 
+        cameraActions.Camera.ZoomCamera.performed += ZoomCameraPerformed;
         cameraActions.Camera.Enable();
     }
-
-
     private void OnDisable()
     {
         cameraActions.Disable();
-        cameraActions.Camera.ZoomCamera.performed -= zoomCamera;
+        cameraActions.Camera.ZoomCamera.performed -= ZoomCameraPerformed;
     }
-
     private void Update()
     {
         GetKeyboardMovement();
     }
-    private void LateUpdate()
-    {
-        UpdateBasePos();
-        UpdateCameraSize();
-        camRect = CustomMath.NearPlaneDimensions(mainCam);
-        //Rotation is outdated:230818 
-        //UpdateBaseRotation();
-    }
-
-    private void SetCamera_xyLimit(float minX, float maxX, float minY, float maxY, float camPadx, float camPady)
-    {
-        this.camLimit.xMin = minX + camPadx;
-        this.camLimit.xMax = maxX - camPadx;
-        this.camLimit.yMin = minY + camPady;
-        this.camLimit.yMax = maxY - camPady;
-    }
 
     /// <summary>
-    /// Returns camera relative direction to move the camera, combined with key inputs +
-    /// rotation direction, which is represented in manner of 1f or -1f =>
-    /// Save this to targetDirection and targetRotaiton
+    /// This Function is called in Upadate(). It is getting the keyboard input and changing the camera's position
+    /// //(=transform of the gameobject that the camera is looking at)
     /// </summary>
     private void GetKeyboardMovement()
     {
@@ -147,11 +96,13 @@ public class CameraControl : MonoBehaviour
 
         inputValue = inputValue.normalized;
 
-        targetVector = inputValue;
+        this.transform.position += inputValue * speed * Time.deltaTime;
         //Rotation is outdated:230818 
         //targetRotation = rotDir;
     }
 
+    //The reason why we zero out z is to make the camera move along the plain = map
+    //No matter how rotated the transform is = related to camera rotation
     /// <summary>
     /// Getting x and y for RED axis of the camera. Used for HORIZONTAL movement.
     /// </summary>
@@ -163,141 +114,58 @@ public class CameraControl : MonoBehaviour
         right.z = 0f;
         return right;
     }
-
     /// <summary>
-    /// Getting x and y for BLUE axis of the camera. Used for HORIZONTAL movement.
-    /// </summary>
-    /// <returns>Vector3, with z being zeroed out</returns>
-    private Vector3 GetCameraForward()
-    {
-        //getting x of BLUE axis of the camera
-        Vector3 forward = cameraTransform.forward;
-        forward.z = 0f;
-        return forward;
-    }
-
-    /// <summary>
-    /// Getting x and y for Green axis of the camera. Used for HORIZONTAL movement.
+    /// Getting x and y for Green axis of the camera. Used for VERTICAL movement.
     /// </summary>
     /// <returns>Vector3, with z being zeroed out</returns>
     private Vector3 GetCameraUp()
     {
-        //getting x of BLUE axis of the camera
+        //getting x of GREEN axis of the camera
         Vector3 up = cameraTransform.up;
         up.z = 0f;
         return up;
     }
 
-    /// <summary>
-    /// This function is used for horizontal movement of the camera.
-    /// This function features acceleration and deacceleration of camera movement via wasd.
-    /// Used in either Update() function OR LateUpdate() function
-    /// </summary>
-    private void UpdateBasePos()
-    {
-        //This temporary vector will be added to current movement vector to make smooth movement towards certain direction.
-        float tempSpeed;
-        //Checking to see if we have to do acceleration or deacceleration for damping.
-        if (targetVector.sqrMagnitude > 0.1f)
-        {
-            //accel until it reaches the maxspeed.
-            tempSpeed = (Time.deltaTime * acceleration);
-            speed = Mathf.Clamp((speed + tempSpeed), 0f, maxSpeed);
-        }
-        else
-        {
-            //decel when there is no keyboard input of wasd.
-            tempSpeed = (Time.deltaTime * damping);
-            speed = Mathf.Clamp((speed - tempSpeed), 0f, maxSpeed);
-        }
-
-        transform.position += (speed * Time.deltaTime) * targetVector;
-
-        if (!camLimit.Contains(new Vector2(transform.position.x, transform.position.y)))
-        {
-            transform.position = new Vector3(Mathf.Clamp(transform.position.x, camLimit.xMin, camLimit.xMax), Mathf.Clamp(transform.position.y, camLimit.yMin, camLimit.yMax), 0f);
-        }
-    }
-
-    /*
-    //Rotation is outdated:230818 
-    /// <summary>
-    /// This function is used for rotation of the camera via q and e keys.
-    /// This function features acceleration of rotation camera until it reaches certain amount of speed,
-    /// and it also features smooth deacceleration of rotation camera when there's no buttons being pushed.
-    /// Used in either Update() function OR LateUpdate() function
-    /// </summary> 
-    private void UpdateBaseRotation()
-    {
-        //temporary speed that will be added to current speed
-        float tempSpeed;
-        //Check if there is any keyboard input of q or e
-        //rot_speed = direction of rotation * rot_acceleration * time.deltaTIme
-        if (targetRotation != 0f)
-        {
-            //accel the rotation speed until it reaches the rotation max speed.
-            //accel happens only until it reaches the max speed.
-            tempSpeed = (targetRotation * rot_acceleration * Time.deltaTime);
-            if(Mathf.Abs(rot_speed + tempSpeed) <= rot_maxSpeed)
-            {
-                rot_speed += tempSpeed;
-            }
-            else
-            {
-                rot_speed = Mathf.Sign(rot_speed) * rot_maxSpeed;
-            }
-        }
-        
-        else
-        {
-            //deaccel when there is no keyboard input.
-            tempSpeed = Mathf.Sign(rot_speed) * (rot_damping * Time.deltaTime);
-
-            if(Mathf.Abs(tempSpeed) <= Mathf.Abs(rot_speed))
-            {
-                rot_speed -= tempSpeed;
-            }
-            else
-            {
-                rot_speed = 0f;
-            }
-        }
-
-        transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles.x, (rot_speed * Time.deltaTime) + transform.rotation.eulerAngles.y, 0f);
-    }
-    */
 
     /// <summary>
-    /// This function is called when zoom event actually happens, which means it does not do the zoom itself.
-    /// UpdateCameraPosition function does the trick every frame.
+    /// This function is called when zoom event actually happens.
+    /// It calculates ratio of y and z changes and changes the target, so that UpdateCameraZoom can do the necessary tricks.
     /// </summary>
     /// <param name="inputVal"></param>
-    private void zoomCamera(InputAction.CallbackContext inputVal)
+    private void ZoomCameraPerformed(InputAction.CallbackContext inputVal)
     {
+        //When wheel action is performed, y and z takes portion of the value.
         float value;
-        value = -inputVal.ReadValue<Vector2>().y * 50f / 1000f;
-
-        if (Mathf.Abs(value) > 0.1f)
+        //value is pos if you wheel up, neg if you wheel down.
+        //we are going to zoom in on wheel up.
+        value = inputVal.ReadValue<Vector2>().y;
+        
+        if (Mathf.Abs(value) > 0.0f)
         {
+            zoomTarget += zoomDir * value;
             if (useZoomLimit)
             {
-                targetZoom = Mathf.Clamp(mainCam.fieldOfView + value, minZoom, maxZoom);
+                zoomTarget = new Vector3(zoomTarget.x,
+                    Mathf.Clamp(zoomTarget.y, yMinZoom, yMaxZoom),
+                    Mathf.Clamp(zoomTarget.z, zMinZoom, zMaxZoom));
+            }
+            this.cineTransposer.m_FollowOffset= Vector3.Lerp(this.cineTransposer.m_FollowOffset, 
+                zoomTarget, Time.deltaTime * calcZoomSpeed(this.cineTransposer.m_FollowOffset.z));
 
-            }
-            else
-            {
-                targetZoom = mainCam.fieldOfView + value;
-            }
         }
-
-        cameraTransform.LookAt(this.transform);
     }
 
-    private void UpdateCameraSize()
+    /// <summary>
+    /// Calculate zoom speed based on current zoom
+    /// </summary>
+    /// <param name="curZoom">current zoom of z(z's change is more dramatic)</param>
+    /// <returns></returns>
+    private float calcZoomSpeed(float curZoom)
     {
-        foreach (Camera cams in this.transform.GetComponentsInChildren<Camera>())
-        {
-            cams.fieldOfView = Mathf.Lerp(cams.fieldOfView, targetZoom, Time.deltaTime * zoom_damping);
-        }
+        float temp = Mathf.Clamp(3600f*3f / Mathf.Pow(curZoom, 2) + 5f,
+            minZoomSpeed, maxZoomSpeed);
+        Debug.Log(temp);
+
+        return temp;
     }
 }
