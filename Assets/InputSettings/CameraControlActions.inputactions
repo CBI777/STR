@@ -13,15 +13,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Zoom Camera",
-                    "type": "Value",
-                    "id": "ef2d987c-d346-444e-aa8e-7da99092e425",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -79,17 +70,6 @@
                     "action": "Movement",
                     "isComposite": false,
                     "isPartOfComposite": true
-                },
-                {
-                    "name": "",
-                    "id": "2cf6f660-23d1-4ef3-b8a5-e3dc10a49008",
-                    "path": "<Mouse>/scroll",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Zoom Camera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
                 }
             ]
         }

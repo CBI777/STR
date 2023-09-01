@@ -218,13 +218,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 25
-  cineCamera: {fileID: 1863574224}
-  yMinZoom: -10
-  zMinZoom: -60
-  yMaxZoom: 0
-  zMaxZoom: -20
-  zoomTarget: {x: 0, y: 0, z: 0}
-  useZoomLimit: 1
 --- !u!1 &508697970
 GameObject:
   m_ObjectHideFlags: 0
@@ -545,8 +538,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.22975291, y: -0.000000018722702, z: -0.00000000441983, w: 0.973249}
-  m_LocalPosition: {x: 0, y: -10, z: -20}
+  m_LocalRotation: {x: -3e-45, y: -1e-45, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -70}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -572,7 +565,7 @@ MonoBehaviour:
   m_BlendUpdateMethod: 1
   m_DefaultBlend:
     m_Style: 1
-    m_Time: 2
+    m_Time: 0.1
     m_CustomCurve:
       serializedVersion: 2
       m_Curve: []
@@ -910,8 +903,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1863574223}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.22975291, y: -0.000000018722702, z: -0.00000000441983, w: 0.973249}
-  m_LocalPosition: {x: 0, y: -10, z: -20}
+  m_LocalRotation: {x: -3e-45, y: -1e-45, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -70}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -965,7 +958,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: -10, z: -20}
+  m_FollowOffset: {x: 0, y: 0, z: -70}
   m_XDamping: 0
   m_YDamping: 0
   m_ZDamping: 0
