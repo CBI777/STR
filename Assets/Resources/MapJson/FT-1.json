@@ -28,6 +28,6 @@
 		{"planeScale":[128,128], "bgName":"BG_TrAr_1", "rectMinMax":[0,768,0,768], "pixPerUnit":1024, "pivot":[0.5,0.5]}
 	],
 	"CameraConfigInfo":[
-		{"initCamPos":[-2.7,-7.6,0], "camLimit":[-3.5,24,-6,15.5], "camZoomLimit":[50,70]}
+		{"initCamPos":[-2.7,-7.6,0], "camLimit":[-48.0,14.5,-48.0, -48.0, 40.0, -48.0, 40.0, 14.5], "camZoomLimit":[50,70]}
 	]
 }

@@ -30,6 +30,7 @@ public class JsonLoader : MonoBehaviour
         this.groundManager.GetInitInfo(tempData.GroundInfo[0]);
         this.buildingManager.GetInitInfo(tempData.BuildingInfo);
         this.nodeManager.GetInitInfo(tempData.NodeInfo);
+        this.cameraManager.GetInitInfo(tempData.CameraConfigInfo[0]);
     }
 
     void SetJsonName(string name)

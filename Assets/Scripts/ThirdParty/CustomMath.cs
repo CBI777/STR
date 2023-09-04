@@ -5,51 +5,32 @@ using UnityEngine;
 public static class CustomMath
 {
     /// <summary>
-    /// Returns value if it is in between min and max. Returns min or max if value is smaller or bigger than min or max.
+    /// Returns Vector3 with clamped x and y value
     /// </summary>
-    /// <param name="value">the value that you want to compare with min and max value</param>
-    /// <param name="min">minimum limit of the value</param>
-    /// <param name="max">maximum limit of the value</param>
+    /// <param name="orig">The original vector that you want to clamp</param>
+    /// <param name="xMin">x min value</param>
+    /// <param name="xMax">x max value</param>
+    /// <param name="yMin">y min value</param>
+    /// <param name="yMax">y max value</param>
     /// <returns></returns>
-    public static float clamp(float value, float min, float max)
+    public static Vector3 ClampVector(Vector3 orig, float xMin, float xMax, float yMin, float yMax)
     {
-        //This function is used returns value if it is in between min and max.
-        //However, it returns min or max if it is smaller than min or bigger than max.
-        return (value < min) ? min : (value > max) ? max : value;
+        return new Vector3(Mathf.Clamp(orig.x, xMin, xMax), Mathf.Clamp(orig.y, yMin, yMax), orig.z);
     }
 
     /// <summary>
-    /// Returns height(pivot = 0.5f) of the camera's near plane
+    /// Returns Vector3 with clamped x, y and z value
     /// </summary>
-    /// <param name="cam">camera that you want to calc the plane</param>
+    /// <param name="orig">The original vector that you want to clamp</param>
+    /// <param name="xMin">x min value</param>
+    /// <param name="xMax">x max value</param>
+    /// <param name="yMin">y min value</param>
+    /// <param name="yMax">y max value</param>
+    /// <param name="zMin">z min value</param>
+    /// <param name="zMax">z max value</param>
     /// <returns></returns>
-    public static float GetCamHeight(Camera cam)
+    public static Vector3 ClampVector(Vector3 orig, float xMin, float xMax, float yMin, float yMax, float zMin, float zMax)
     {
-        float a = cam.nearClipPlane; //get length
-        float A = cam.fieldOfView * 0.5f; //get angle
-        A = A * Mathf.Deg2Rad; // convert for radian
-
-        return (Mathf.Tan(A) * a);
-    }
-
-
-    /// <summary>
-    /// Returns current cam's near plane dimension in form of Rect
-    /// </summary>
-    /// <param name="cam">camera that you want to calc the plane</param>
-    /// <returns>Rect of near plane</returns>
-    public static Rect NearPlaneDimensions(Camera cam)
-    {
-        Rect temp = new Rect();
-
-        float h = GetCamHeight(cam);
-        float w = (h / cam.pixelHeight) * cam.pixelWidth;
-
-        temp.xMin = -w;
-        temp.xMax = w;
-        temp.yMin = -h;
-        temp.yMax = h;
-
-        return temp;
+        return new Vector3(Mathf.Clamp(orig.x, xMin, xMax), Mathf.Clamp(orig.y, yMin, yMax), Mathf.Clamp(orig.z, zMin, zMax));
     }
 }

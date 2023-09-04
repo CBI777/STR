@@ -1,10 +1,10 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GroundManager : MonoBehaviour
 {
     //temporal [SerializeField] to debug and see the value
+
     //Bg Img name
     [SerializeField]
     private string bgName;
@@ -52,6 +52,7 @@ public class GroundManager : MonoBehaviour
 
     private void SetSprite(string name, Rect rect, Vector2 piv, float pixel)
     {
-        bgImg.GetComponent<SpriteRenderer>().sprite = Sprite.Create(Resources.Load<Texture2D>(Whereabouts.BackgroundTextures + name), rect, piv, pixel);
+        bgImg.GetComponent<SpriteRenderer>().sprite = 
+            Sprite.Create(Resources.Load<Texture2D>(Whereabouts.BackgroundTextures + name), rect, piv, pixel);
     }
 }
