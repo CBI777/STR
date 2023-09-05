@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 //Neutral(NotApplicable), StronDrium_dominion(Friendly), democratic_Republic_of_Coprita(Main enemy)
 public enum ConqForce

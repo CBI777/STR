@@ -1,10 +1,9 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class NodeManager : MonoBehaviour
 {
+    //int value that is used to represent none of the nodes is chosen.
+    public static int NONE_SEL = -1;
     //These two are 'folders' to keep created prefabs
     //Assign empty gameobjects to keep created prefabs 'neater'
     [SerializeField]
@@ -19,9 +18,9 @@ public class NodeManager : MonoBehaviour
     [SerializeField]
     List<List<TactMap_Lines>> lines = new List<List<TactMap_Lines>>();
 
-    //This refers to the node that the plyaer is currently viewing.
+    //This refers to the node that the player is currently viewing.
     //-1 to not how any nodes.
-    private int selectedNode = -1;
+    private int selectedNode = NONE_SEL;
 
     //======Event Related======//
     [SerializeField]
@@ -44,15 +43,24 @@ public class NodeManager : MonoBehaviour
     //==========Event Related Functions==========//
     private void SelectNode(int ind)
     {
-        this.selectedNode = ind;
-        if(this.selectedNode != -1)
+        if(ind != NONE_SEL)
         {
-            Debug.Log("Clicked: " + this.selectedNode + " / " 
-                + nodes[selectedNode].GetNodeSpec().ToString() + " : " 
-                + nodes[selectedNode].GetConqForce().ToString());
+            if(this.selectedNode == ind)
+            {
+                Debug.Log("Canceled select by clikcing again");
+                this.selectedNode = NONE_SEL;
+            }
+            else
+            {
+                this.selectedNode = ind;
+                Debug.Log("Clicked: " + this.selectedNode + " / "
+                    + nodes[selectedNode].GetNodeSpec().ToString() + " : "
+                    + nodes[selectedNode].GetConqForce().ToString());
+            }
         }
         else
         {
+            selectedNode = NONE_SEL;
             Debug.Log("Clicked: " + this.selectedNode + " : ground.");
         }
     }
