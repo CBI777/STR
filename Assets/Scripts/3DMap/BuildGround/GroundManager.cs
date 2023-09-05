@@ -1,26 +1,43 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class GroundManager : MonoBehaviour
+public class GroundManager : MonoBehaviour, IPointerClickHandler
 {
-    //temporal [SerializeField] to debug and see the value
-
     //Bg Img name
-    [SerializeField]
     private string bgName;
     //Rect that we need to crop the img in the size and area that we want
-    [SerializeField]
     private Rect cropRect;
     //Pixel value for new sprite that we'll create by cropping the image in runtime.
-    [SerializeField]
     private float pixPerUnit;
     //pivot for new sprite that we'll create by cropping the image in runtime.
-    [SerializeField]
     private Vector2 pivot;
-
     //actual gameobject that has the sprite renderer for the background img.
     //this will be initailized in start, since the renderer will be attached to the same object as this script
     private SpriteRenderer bgImg;
+
+    //collider that will be used to get 'click on floor' - undo click on sth.
+    private BoxCollider2D boxcollider;
+
+    //======Event Related======//
+    [SerializeField]
+    private NodeClicked_SO nodeClicked_SO;
+    //=========================//
+
+
+    //=====================Event related Functions=======================//
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        BroadcastClickedNode();
+    }
+
+    private void BroadcastClickedNode()
+    {
+        nodeClicked_SO.Broadcast_NodeClicked(-1);
+    }
+    //===================================================================//
+
 
     public void GetInitInfo(GroundInfo gd)
     {
@@ -39,6 +56,7 @@ public class GroundManager : MonoBehaviour
     void Awake()
     {
         this.bgImg = this.GetComponent<SpriteRenderer>();
+        this.boxcollider = this.GetComponent<BoxCollider2D>();
     }
 
     private void SetRect(float minX, float maxX, float minY, float maxY)
@@ -54,5 +72,7 @@ public class GroundManager : MonoBehaviour
     {
         bgImg.GetComponent<SpriteRenderer>().sprite = 
             Sprite.Create(Resources.Load<Texture2D>(Whereabouts.BackgroundTextures + name), rect, piv, pixel);
+        this.boxcollider.size = this.bgImg.size;
     }
+
 }

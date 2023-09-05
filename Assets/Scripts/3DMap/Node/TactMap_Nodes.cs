@@ -1,8 +1,8 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class TactMap_Nodes : MonoBehaviour
+public class TactMap_Nodes : MonoBehaviour, IPointerClickHandler
 {
     //index of the node, which differentiates the node with each other
     [SerializeField]
@@ -30,12 +30,32 @@ public class TactMap_Nodes : MonoBehaviour
     [SerializeField]
     private NodeSpec prevSpec = NodeSpec.NR;
 
+    //Sprite of the node
     private SpriteRenderer spriteRend;
+
+    [SerializeField]
+    private NodeClicked_SO nodeClicked_SO;
 
     private void Awake()
     {
         this.spriteRend = this.GetComponent<SpriteRenderer>();
     }
+
+    //=====================Event related Functions=======================//
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Left)
+        {
+            BroadcastClickedNode();
+        }
+    }
+
+    private void BroadcastClickedNode()
+    {
+        nodeClicked_SO.Broadcast_NodeClicked(this.index);
+    }
+    //===================================================================//
+
 
     public void InitNode(int index, string conq, string spec, string[] state, int[] conn)
     {
@@ -120,5 +140,13 @@ public class TactMap_Nodes : MonoBehaviour
     public List<int> getConnInfo()
     {
         return this.conn;
+    }
+    public ConqForce GetConqForce()
+    {
+        return this.conq;
+    }
+    public NodeSpec GetNodeSpec()
+    {
+        return this.spec;
     }
 }

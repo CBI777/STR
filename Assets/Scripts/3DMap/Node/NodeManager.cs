@@ -1,13 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class NodeManager : MonoBehaviour
 {
-    //For testing, i'm simplifying the nodes to prefabs.
-    // This MUST BE CHANGED
-
     //These two are 'folders' to keep created prefabs
+    //Assign empty gameobjects to keep created prefabs 'neater'
     [SerializeField]
     Transform nodeKeeper;
     [SerializeField]
@@ -20,6 +19,41 @@ public class NodeManager : MonoBehaviour
     [SerializeField]
     List<List<TactMap_Lines>> lines = new List<List<TactMap_Lines>>();
 
+    //This refers to the node that the plyaer is currently viewing.
+    //-1 to not how any nodes.
+    private int selectedNode = -1;
+
+    //======Event Related======//
+    [SerializeField]
+    private NodeClicked_SO nodeClicked_SO;
+    //=========================//
+
+    private void OnEnable()
+    {
+        nodeClicked_SO.nodeClickedEvent.AddListener(SelectNode);
+    }
+    private void OnDisable()
+    {
+        nodeClicked_SO.nodeClickedEvent.AddListener(SelectNode);
+    }
+
+    //==========Event Related Functions==========//
+    private void SelectNode(int ind)
+    {
+        this.selectedNode = ind;
+        if(this.selectedNode != -1)
+        {
+            Debug.Log("Clicked: " + this.selectedNode + " / " 
+                + nodes[selectedNode].GetNodeSpec().ToString() + " : " 
+                + nodes[selectedNode].GetConqForce().ToString());
+        }
+        else
+        {
+            Debug.Log("Clicked: " + this.selectedNode + " : ground.");
+        }
+    }
+    //==========Event Related Functions==========//
+
     public void GetInitInfo(List<NodeInfo> ni)
     {
         int nodeCount = ni.Count;
@@ -31,7 +65,7 @@ public class NodeManager : MonoBehaviour
             nodes.Add(Instantiate<GameObject>(Resources.Load<GameObject>(Whereabouts.NodePrefab),
                 new Vector3(node.xyz[0], node.xyz[1], node.xyz[2]),
                 Quaternion.identity,
-                nodeKeeper).GetComponent<TactMap_Nodes>());
+                nodeKeeper != null ? nodeKeeper : this.transform).GetComponent<TactMap_Nodes>());
             nodes[tempIdx].InitNode(node);
         }
 
@@ -51,7 +85,7 @@ public class NodeManager : MonoBehaviour
                     lines[ind].Add(Instantiate<GameObject>(Resources.Load<GameObject>(Whereabouts.LinePrefab),
                         Vector3.zero,
                         Quaternion.identity,
-                        lineKeeper).GetComponent<TactMap_Lines>());
+                        lineKeeper != null ? lineKeeper : this.transform).GetComponent<TactMap_Lines>());
                     lines[ind][i].InitLine(ind, i,
                         nodes[ind].transform.position, nodes[i].transform.position,
                         ni[ind].conn[i]);
