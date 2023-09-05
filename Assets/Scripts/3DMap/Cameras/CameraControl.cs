@@ -33,6 +33,12 @@ public class CameraControl : MonoBehaviour
     [SerializeField]
     private CinemachineConfiner2D confiner;
 
+    //======Event Related======//
+    [SerializeField]
+    private JSON_CameraManager_Init_SO cameraInitEvent;
+    //=========================//
+
+
     private void Awake()
     {
         cameraTransform = this.transform;
@@ -44,10 +50,12 @@ public class CameraControl : MonoBehaviour
         //Enabling the input map for camera movement
         movement = cameraActions.Camera.Movement;
         cameraActions.Camera.Enable();
+        cameraInitEvent.jsonCameraInitEvent.AddListener(GetInitInfo);
     }
     private void OnDisable()
     {
         cameraActions.Disable();
+        cameraInitEvent.jsonCameraInitEvent.RemoveListener(GetInitInfo);
     }
     private void LateUpdate()
     {

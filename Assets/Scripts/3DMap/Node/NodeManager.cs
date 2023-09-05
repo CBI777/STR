@@ -26,15 +26,19 @@ public class NodeManager : MonoBehaviour
     //======Event Related======//
     [SerializeField]
     private NodeClicked_SO nodeClicked_SO;
+    [SerializeField]
+    private JSON_NodeManager_Init_SO nodeInitEvent;
     //=========================//
 
     private void OnEnable()
     {
         nodeClicked_SO.nodeClickedEvent.AddListener(SelectNode);
+        nodeInitEvent.jsonNodeInitEvent.AddListener(GetInitInfo);
     }
     private void OnDisable()
     {
-        nodeClicked_SO.nodeClickedEvent.AddListener(SelectNode);
+        nodeClicked_SO.nodeClickedEvent.RemoveListener(SelectNode);
+        nodeInitEvent.jsonNodeInitEvent.RemoveListener(GetInitInfo);
     }
 
     //==========Event Related Functions==========//
@@ -52,7 +56,6 @@ public class NodeManager : MonoBehaviour
             Debug.Log("Clicked: " + this.selectedNode + " : ground.");
         }
     }
-    //==========Event Related Functions==========//
 
     public void GetInitInfo(List<NodeInfo> ni)
     {
@@ -69,7 +72,7 @@ public class NodeManager : MonoBehaviour
             nodes[tempIdx].InitNode(node);
         }
 
-        for(int ind = 0; ind < nodeCount; ind++)
+        for (int ind = 0; ind < nodeCount; ind++)
         {
             for (int i = 0; i < nodeCount; i++)
             {
@@ -98,6 +101,9 @@ public class NodeManager : MonoBehaviour
             }
         }
     }
+    //==========Event Related Functions==========//
+
+
 
     //Node manager SHOULD have functions that can check all the current nodes at once.
     //This can be used in, for example, LostProp effect, besieger decision...

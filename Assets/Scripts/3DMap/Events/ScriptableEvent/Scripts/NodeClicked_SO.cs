@@ -5,7 +5,7 @@ using UnityEngine;
 public class NodeClicked_SO : ScriptableObject
 {
     /// <summary>
-    /// Subscibe to this event if you want to receive :
+    /// Subscibe this event if you want to receive :
     /// Index value of the node that has been clicked.
     /// </summary>
     [System.NonSerialized]

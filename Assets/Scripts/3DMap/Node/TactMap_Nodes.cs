@@ -33,6 +33,7 @@ public class TactMap_Nodes : MonoBehaviour, IPointerClickHandler
     //Sprite of the node
     private SpriteRenderer spriteRend;
 
+    //Scriptable Obejct for event invoke
     [SerializeField]
     private NodeClicked_SO nodeClicked_SO;
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -21,9 +22,23 @@ public class GroundManager : MonoBehaviour, IPointerClickHandler
 
     //======Event Related======//
     [SerializeField]
+    private JSON_GroundManager_Init_SO backgroundInitEvent;
+    [SerializeField]
     private NodeClicked_SO nodeClicked_SO;
     //=========================//
-
+    private void OnEnable()
+    {
+        backgroundInitEvent.jsonGroundInitEvent.AddListener(GetInitInfo);
+    }
+    private void OnDisable()
+    {
+        backgroundInitEvent.jsonGroundInitEvent.RemoveListener(GetInitInfo);
+    }
+    void Awake()
+    {
+        this.bgImg = this.GetComponent<SpriteRenderer>();
+        this.boxcollider = this.GetComponent<BoxCollider2D>();
+    }
 
     //=====================Event related Functions=======================//
 
@@ -36,8 +51,6 @@ public class GroundManager : MonoBehaviour, IPointerClickHandler
     {
         nodeClicked_SO.Broadcast_NodeClicked(-1);
     }
-    //===================================================================//
-
 
     public void GetInitInfo(GroundInfo gd)
     {
@@ -53,11 +66,8 @@ public class GroundManager : MonoBehaviour, IPointerClickHandler
         SetSprite(this.bgName, this.cropRect, this.pivot, this.pixPerUnit);
     }
 
-    void Awake()
-    {
-        this.bgImg = this.GetComponent<SpriteRenderer>();
-        this.boxcollider = this.GetComponent<BoxCollider2D>();
-    }
+    //===================================================================//
+
 
     private void SetRect(float minX, float maxX, float minY, float maxY)
     {

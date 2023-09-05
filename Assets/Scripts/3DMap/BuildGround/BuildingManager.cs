@@ -7,6 +7,21 @@ public class BuildingManager : MonoBehaviour
     //This can always change as my project become bigger.
     [SerializeField]
     List<GameObject> buildings;
+
+    //======Event Related======//
+    [SerializeField]
+    private JSON_BuildingManager_Init_SO buildingInitEvent;
+    //=========================//
+
+    private void OnEnable()
+    {
+        buildingInitEvent.jsonBuildingInitEvent.AddListener(GetInitInfo);
+    }
+    private void OnDisable()
+    {
+        buildingInitEvent.jsonBuildingInitEvent.RemoveListener(GetInitInfo);
+    }
+
     public void GetInitInfo(List<BuildingInfo> bi)
     {
         foreach (BuildingInfo bds in bi)

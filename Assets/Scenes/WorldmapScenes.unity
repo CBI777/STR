@@ -173,6 +173,7 @@ MonoBehaviour:
   lineKeeper: {fileID: 577516077}
   nodes: []
   nodeClicked_SO: {fileID: 11400000, guid: 7a2a98f415782f643aaa2d23d778a5a4, type: 2}
+  nodeInitEvent: {fileID: 11400000, guid: 712f1b35543e7a349a8f3e947f073671, type: 2}
 --- !u!1 &436290828
 GameObject:
   m_ObjectHideFlags: 0
@@ -222,6 +223,7 @@ MonoBehaviour:
   poly_camLimit: []
   polyCollider: {fileID: 1781094778}
   confiner: {fileID: 1863574226}
+  cameraInitEvent: {fileID: 11400000, guid: ebd01811067a95444a95d7093c2e0ad4, type: 2}
 --- !u!1 &508697970
 GameObject:
   m_ObjectHideFlags: 0
@@ -362,6 +364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buildings: []
+  buildingInitEvent: {fileID: 11400000, guid: 967688af4219a9a4b800f5c6fdc10af1, type: 2}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,7 +625,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.33007532, y: -6.3200097, z: -35}
+  m_LocalPosition: {x: 0.3302646, y: -6.3200097, z: -35}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -708,10 +711,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   JsonFileName: FT-1
-  groundManager: {fileID: 1325271268}
-  buildingManager: {fileID: 645910707}
-  nodeManager: {fileID: 409585269}
-  cameraManager: {fileID: 436290830}
+  groundManager: {fileID: 11400000, guid: fa20ac415e37fa14a912f7405bc544f8, type: 2}
+  buildingManager: {fileID: 11400000, guid: 967688af4219a9a4b800f5c6fdc10af1, type: 2}
+  nodeManager: {fileID: 11400000, guid: 712f1b35543e7a349a8f3e947f073671, type: 2}
+  cameraManager: {fileID: 11400000, guid: ebd01811067a95444a95d7093c2e0ad4, type: 2}
 --- !u!4 &1015598560
 Transform:
   m_ObjectHideFlags: 0
@@ -773,6 +776,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c78eae3f736387c4383315aa749849d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundInitEvent: {fileID: 11400000, guid: fa20ac415e37fa14a912f7405bc544f8, type: 2}
   nodeClicked_SO: {fileID: 11400000, guid: 7a2a98f415782f643aaa2d23d778a5a4, type: 2}
 --- !u!212 &1325271269
 SpriteRenderer:

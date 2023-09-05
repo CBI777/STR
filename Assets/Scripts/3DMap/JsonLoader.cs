@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,17 +7,18 @@ public class JsonLoader : MonoBehaviour
     [SerializeField]
     private string JsonFileName;
 
-    //Manager who's going to initialize building & backGround
+    //Scriptable Object event for initializing background
     [SerializeField]
-    private GroundManager groundManager;
+    private JSON_GroundManager_Init_SO groundManager;
+    //Scriptable Object event for initializing buildings
     [SerializeField]
-    private BuildingManager buildingManager;
-    //Manager who's going to initialize nodes
+    private JSON_BuildingManager_Init_SO buildingManager;
+    //Scriptable Object event for initializing nodes
     [SerializeField]
-    private NodeManager nodeManager;
+    private JSON_NodeManager_Init_SO nodeManager;
     //Manager who's going to initialize various camera info
     [SerializeField]
-    private CameraControl cameraManager;
+    private JSON_CameraManager_Init_SO cameraManager;
 
 
     //temporary
@@ -27,10 +27,10 @@ public class JsonLoader : MonoBehaviour
         var tempData = JsonUtility.FromJson<StageInfo>(
             Resources.Load<TextAsset>("MapJson/" + JsonFileName).ToString());
 
-        this.groundManager.GetInitInfo(tempData.GroundInfo[0]);
-        this.buildingManager.GetInitInfo(tempData.BuildingInfo);
-        this.nodeManager.GetInitInfo(tempData.NodeInfo);
-        this.cameraManager.GetInitInfo(tempData.CameraConfigInfo[0]);
+        groundManager.Broadcast_Background_Init(tempData.GroundInfo[0]);
+        buildingManager.Broadcast_Building_Init(tempData.BuildingInfo);
+        nodeManager.Broadcast_Node_Init(tempData.NodeInfo);
+        cameraManager.Broadcast_Camera_Init(tempData.CameraConfigInfo[0]);
     }
 
     void SetJsonName(string name)
