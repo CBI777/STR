@@ -90,7 +90,7 @@ public class TactMap_Nodes : MonoBehaviour, IPointerClickHandler
         //TODO : change sprite or effects or sth
         if(this.prevConq != this.conq)
         {
-            SetMaterial();
+            SetColor();
             this.prevConq = this.conq;
         }
         if(this.prevSpec != this.spec)
@@ -101,11 +101,17 @@ public class TactMap_Nodes : MonoBehaviour, IPointerClickHandler
     }
 
     /// <summary>
-    /// This function is called when there's a need of change in material - when conq is changed
+    /// This function is called when there's a need of change in color - when conq is changed
     /// </summary>
-    private void SetMaterial()
+    private void SetColor()
     {
-        this.spriteRend.material = Resources.Load<Material>(Whereabouts.NodeMaterial + this.conq.ToString());
+        Color newColor;
+        if(ColorUtility.TryParseHtmlString(
+            ConqForceValues.ConqToColor(this.conq), out newColor))
+        {
+            this.spriteRend.color = newColor;
+        }
+
     }
 
     /// <summary>

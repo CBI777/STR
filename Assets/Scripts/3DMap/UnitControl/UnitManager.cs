@@ -72,7 +72,6 @@ public class UnitManager : MonoBehaviour
         {
             //UnitManager starts with making whole empty list
             units.Add(new List<Units>());
-            Debug.Log(units.Count);
         }
     }
     //==========Event Related Functions==========//
