@@ -12,10 +12,10 @@ public class UnitManager : MonoBehaviour
 
     //list to keep track of acutal units
     //The reason why its list of list is because : there could be multiple units on one node
-    //(Ex) Structure and player
+    //(Ex) Facility and player
     //TODO : MUST ADD CHECKING FUNCTION FOR THIS
     [SerializeField]
-    List<List<Units>> units = new List<List<Units>>();
+    List<List<UnitBase>> units = new List<List<UnitBase>>();
 
     //This refers to the unit that the player is currently viewing.
     //-1 to not how any nodes.
@@ -71,7 +71,7 @@ public class UnitManager : MonoBehaviour
         foreach (NodeInfo node in ni)
         {
             //UnitManager starts with making whole empty list
-            units.Add(new List<Units>());
+            units.Add(new List<UnitBase>());
         }
     }
     //==========Event Related Functions==========//

@@ -1,23 +1,6 @@
 using System.Collections.Generic;
 
-//Neutral(NotApplicable), StronDrium_dominion(Friendly), democratic_Republic_of_Coprita(Main enemy)
-public enum ConqForce
-{
-    NA, SD, RC
-};
-
-//FriendlyBase, NoRmal(Nothing), ProHibited, StrongHold, 
-public enum NodeSpec
-{
-    FB, NR, PH, SH
-}
-
-//NORmal(nothing out of ordinary)
-public enum NodeState
-{
-    nor
-}
-
+//---------------------------------------used in 3d Map JSON---------------------------------------//
 [System.Serializable]
 public class NodeInfo
 {
@@ -67,3 +50,4 @@ public class StageInfo
     public List<GroundInfo> GroundInfo;
     public List<CameraConfigInfo> CameraConfigInfo;
 }
+//---------------------------------------used in 3d Map JSON---------------------------------------//
