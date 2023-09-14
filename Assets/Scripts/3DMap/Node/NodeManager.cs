@@ -22,6 +22,10 @@ public class NodeManager : MonoBehaviour
     //-1 to not how any nodes.
     private int selectedNode = NONE_SEL;
 
+    //Z offset of nodes that will be created : to give that little shadow effect.
+    [SerializeField]
+    private float zOffset = -0.2f;
+
     //======Event Related======//
     [SerializeField]
     private NodeClicked_SO nodeClicked_SO;
@@ -74,7 +78,7 @@ public class NodeManager : MonoBehaviour
             tempIdx = node.index;
             //Add node to nodes
             nodes.Add(Instantiate<GameObject>(Resources.Load<GameObject>(Whereabouts.NodePrefab),
-                new Vector3(node.xyz[0], node.xyz[1], node.xyz[2]),
+                new Vector3(node.xyz[0], node.xyz[1], node.xyz[2] + zOffset),
                 Quaternion.identity,
                 nodeKeeper != null ? nodeKeeper : this.transform).GetComponent<TactMap_Nodes>());
             nodes[tempIdx].InitNode(node);
@@ -110,8 +114,6 @@ public class NodeManager : MonoBehaviour
         }
     }
     //==========Event Related Functions==========//
-
-
 
     //Node manager SHOULD have functions that can check all the current nodes at once.
     //This can be used in, for example, LostProp effect, besieger decision...

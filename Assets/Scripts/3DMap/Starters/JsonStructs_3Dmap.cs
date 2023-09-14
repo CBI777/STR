@@ -39,7 +39,7 @@ public class CameraConfigInfo
 {
     public List<float> initCamPos;
     public List<float> camLimit;
-    public List<float> camZoomLimit;
+    public float camZoomLimit;
 }
 
 [System.Serializable]

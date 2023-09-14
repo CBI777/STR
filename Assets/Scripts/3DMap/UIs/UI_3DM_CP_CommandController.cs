@@ -36,9 +36,7 @@ public class UI_3DM_CP_CommandController : MonoBehaviour
         //the reason why we calc endX first is because 
         this.commandRect = this.commandHolder.GetComponent<RectTransform>();
         this.endX = this.commandRect.anchoredPosition.x;
-        Debug.Log(initX);
         this.initX = this.endX - this.commandRect.rect.width;
-        Debug.Log(endX);
     }
 
     private void DisableCommandHolder()
@@ -47,9 +45,9 @@ public class UI_3DM_CP_CommandController : MonoBehaviour
     }
 
     /// <summary>
-    /// Tween the portrait in by moving posx, according to the activeSelf of command
+    /// Tween the Command holder in by moving posx,  according to input
     /// </summary>
-    /// <param name="state">state of characterpanel</param>
+    /// <param name="state">show panel if true, hide the panel if false</param>
     private void ChangeCommand(bool state)
     {
         if(state)

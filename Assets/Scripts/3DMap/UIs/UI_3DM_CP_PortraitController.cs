@@ -48,12 +48,12 @@ public class UI_3DM_CP_PortraitController : MonoBehaviour
         this.frame.SetActive(false);
     }
     /// <summary>
-    /// Tween the portrait by y, according to the activeSelf of portrait
+    /// Tween the portrait by y, according to input
     /// </summary>
-    /// <param name="state">current state of characterpanel</param>
+    /// <param name="state">show panel if true, hide the panel if false</param>
     private void ChangePortrait(bool state)
     {
-        if(state)
+        if (state)
         {
             this.portMask.SetActive(true);
             this.frame.SetActive(true);
