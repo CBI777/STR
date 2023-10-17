@@ -3,7 +3,7 @@ Project STR
 </h1>
 
 <p align="center">
-    <img src="https://github.com/CBI777/STR/assets/97778404/1ff340fa-56e2-4f87-91de-0ef64334ebe8", width=700>
+    <img src="https://github.com/CBI777/STR/assets/97778404/fc598940-3ace-4b49-8a4c-034b671050fc", width=700>
 </p>
 
 
